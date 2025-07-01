@@ -24,7 +24,7 @@ const NavBar = () => {
         ]
       : role === "Admin"
       ? [
-          { page: "Home", link: "/home" },
+          { page: "Home", link: "/" },
           { page: "Dashboard", link: "/dash" },
         ]
       : [
