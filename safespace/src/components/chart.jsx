@@ -23,7 +23,7 @@ const data = {
   labels: weeks,
   datasets: [
     {
-      label: "Weekly Activity",
+      label: "Weekly Reports",
       data: values,
       fill: false,
       borderColor: "#035CBA",
