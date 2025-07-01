@@ -147,8 +147,9 @@ import { FaStar } from "react-icons/fa6";
 import badge from "../assets/badge.png";
 import { useState } from "react";
 import { Link } from "react-router";
-
+import { useAuth } from "../authcontext";
 const Profile = () => {
+    const user=useAuth()
   // Password state
   const [edit, setEdit] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -158,8 +159,8 @@ const Profile = () => {
   // Profile state
   const [editEmail, setEditEmail] = useState(false);
   const [editAbout, setEditAbout] = useState(false);
-  const [name, setName] = useState("Belkharachouche Soundoud");
-  const [email, setEmail] = useState("siddxxd@gmail.com");
+  const [name, setName] = useState(user.user.name);
+  const [email, setEmail] = useState(user.user.email);
   const [about, setAbout] = useState(
     "Lorem ipsum dolor sit amet consectetur. Erat auctor a aliquam vel congue luctus. Leo diam cras neque mauris ac arcu elit i ipsum dolor sit amet consectetur."
   );
@@ -275,7 +276,7 @@ const Profile = () => {
           </div>
           <div className="flex justify-between">
             <p className="text-gray-500">Reports</p>
-            <p className="font-medium">10</p>
+            <p className="font-medium">{user.user.reportsCount}</p>
           </div>
         </div>
       </div>

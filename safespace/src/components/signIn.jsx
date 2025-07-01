@@ -3,10 +3,13 @@ import fourth from "../assets/fourth.png";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import axios from 'axios';
+import { useAuth } from "../authcontext";
+import { useNavigate } from "react-router";
 const SignIn = ({goto}) => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
+  const {login}=useAuth();
   const {
     register,
     handleSubmit,
@@ -15,8 +18,29 @@ const SignIn = ({goto}) => {
     clearErrors,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Submitted Password:", data);
+  const onSubmit = async(data) => {
+    console.log(data);
+     try {
+      const res = await axios.post('http://192.168.43.143:5000/api/auth/login',data, {
+        headers: {
+          'Content-Type': 'application/json',
+          
+        }
+       
+      } );
+      console.log(res.data);
+      const { token, user } = res.data;
+      login(token,user);
+if (user.role === "Child") {
+        navigate("/");
+      } else if (user.role === "SchoolPsychologist" || user.role === "admin") {
+        navigate("/dash");
+      } else {
+        navigate("/"); 
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -59,17 +83,17 @@ const SignIn = ({goto}) => {
         </div>
 
         <div className="relative mb-1">
-          <label htmlFor="password2" className="block mb-2 text-sm ">
+          <label htmlFor="password" className="block mb-2 text-sm ">
             Enter your Password
           </label>
           <input
             type={showPassword ? "text" : "password"}
-            id="password2"
+            id="password"
             placeholder="Enter your password"
             className="border p-3 pr-10 rounded-md w-full text-sm focus:border-[#035CBA] border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#035CBA]"
-            {...register("password2", {
+            {...register("password", {
               required: "Password is required",
-              onChange: () => clearErrors("password2"),
+              onChange: () => clearErrors("password"),
             })}
           />
           <button
@@ -84,9 +108,9 @@ const SignIn = ({goto}) => {
     
         <div className="grid grid-cols-2 gap-2 mt-2">
   <div className="min-w-0">
-    {(errors.email || errors.password2) && (
+    {(errors.email || errors.password) && (
       <p className="text-red-500 text-sm truncate">
-        {errors.email?.message || errors.password2?.message}
+        {errors.email?.message || errors.password?.message}
       </p>
     )}
   </div>

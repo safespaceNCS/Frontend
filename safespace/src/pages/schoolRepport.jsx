@@ -1,16 +1,19 @@
 import React, { useState, useMemo } from "react";
 import circle from "../assets/circle.png";
-import Preview from "../components/preview"
-const data = [
-  { name: "Belkharchouche", first: "Soundous", date: "July 1, 2024", status: "Seen", reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
-  { name: "Belkharchouche", first: "Soundous", date: "July 25, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
-  { name: "Belkharchouche", first: "Soundous", date: "August 1, 2024", status: "Seen",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
-  { name: "Belkharchouche", first: "Soundous", date: "August 22, 2024", status: "Pending", reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
-  { name: "Belkharchouche", first: "Soundous", date: "August 29, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",}  },
-  { name: "Belkharchouche", first: "Soundous", date: "September 5, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
-  { name: "Belkharchouche", first: "Soundous", date: "August 1, 2024", status: "Seen",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
-  { name: "Belkharchouche", first: "Soundous", date: "August 22, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",}  },
-  { name: "Belkharchouche", first: "Soundous", date: "August 29, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+import Preview from "../components/preview";
+import { useEffect } from "react";
+import { useAuth } from "../authcontext";
+import axios from 'axios';
+const fakedata = [
+  { name: "Belkharchouche",  date: "July 1, 2024", status: "Seen", reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+  { name: "Belkharchouche",  date: "July 25, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+  { name: "Belkharchouche",  date: "August 1, 2024", status: "Seen",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+  { name: "Belkharchouche",  date: "August 22, 2024", status: "Pending", reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+  { name: "Belkharchouche",  date: "August 29, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",}  },
+  { name: "Belkharchouche",  date: "September 5, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+  { name: "Belkharchouche",  date: "August 1, 2024", status: "Seen",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
+  { name: "Belkharchouche",  date: "August 22, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",}  },
+  { name: "Belkharchouche",  date: "August 29, 2024", status: "Pending",  reporting:{ where: "On Roblox", when: "2024-07-01",what: "Someone was being rude ",who: "A stranger",feeling: "😟",anonymous: "Yes",} },
 ];
 //   const reportData = {
 //     where: "On Roblox",
@@ -22,17 +25,62 @@ const data = [
 //   };
  
 const ReportsTable = () => {
-    
+    const [loading, setLoading] = useState(true);
+
+    const [data,setData]=useState([]);
+    const {token} =useAuth();
+    useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        
+        const res = await axios.get('http://192.168.43.143:5000/api/reports', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    console.log(res.data)
+
+       setData(res.data);
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+        
+      }finally {
+        setLoading(false); // ✅ always stop loading
+      }
+    };
+
+    fetchReports();
+  }, [token]);
+  console.log("here",data)
     const [open,setOpen]=useState(false);
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("All");
   const [dateSortOrder, setDateSortOrder] = useState("Newest");
  const [reportData,setReportData]=useState({});
-  const opened =(x)=>{
-    setReportData(x);
-    console.log(x);
-    setOpen(true);
+  const opened = async (x) => {
+  setReportData(x.reporting);
+console.log('this',x.status)
+  if (x.status === 'Pending') {
+    try {
+      const res = await axios.put(
+        `http://192.168.43.143:5000/api/reports/${x.id}/status`,
+        {}, 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // correct token
+          },
+        }
+      );
+      console.log("Updated status:", res.data);
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
   }
+
+  setOpen(true);
+};
+
   const close =()=>{
     setReportData();
     setOpen(false)
@@ -52,13 +100,15 @@ const ReportsTable = () => {
     });
 
     return filtered;
-  }, [statusFilter, dateSortOrder]);
+  }, [data,statusFilter, dateSortOrder]);
 
   const totalPages = Math.ceil(filteredAndSortedData.length / rowsPerPage);
   const currentData = filteredAndSortedData.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-
+if (loading){return(<div>loading cnxx </div>)}
   return (
+    
     <div className="relative overflow-hidden h-[100vh] pt-20 font-['Inter'] px-20">
+      
       <img src={circle} className="absolute -bottom-40 -right-50 h-[50%] -z-10" />
       <img src={circle} className="absolute -bottom-67 -right-0 h-[50%] -z-10" />
 
@@ -108,7 +158,7 @@ const ReportsTable = () => {
               key={i}
               className="grid grid-cols-4 h-11 text-sm text-gray-600 font-semibold border border-gray-300 py-2 items-center text-center justify-around rounded-lg"
             >
-              <div>{x.first}</div>
+              <div>{x.name||"anonymous"}</div>
               <div>{x.date}</div>
               <div>
                 <span
@@ -123,7 +173,7 @@ const ReportsTable = () => {
               </div>
               <div>
                 
-                  <button onClick={()=>opened(x.reporting)} className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-500 rounded hover:bg-blue-50">
+                  <button onClick={()=>opened(x)} className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-500 rounded hover:bg-blue-50">
                     view 
                   </button>
                 

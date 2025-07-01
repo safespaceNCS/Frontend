@@ -4,9 +4,10 @@ import { MdOutlineLocalPhone } from "react-icons/md";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdOutlineSms } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-
-
+import {useAuth} from '../authcontext';
+import axios from 'axios'
 const Report = () => {
+   const {token} = useAuth();
     const contact=[{icon:<MdOutlineLocalPhone  className="text-xl  text-blue-700"/>,label:"phone",val:"0699516532"},{icon:< MdOutlineSms className="text-xl  text-blue-700"/>,label:"sms",val:"112"},{icon:<HiOutlineMail  className="text-xl  text-blue-700"/>,label:"Email",val:"help@company.dz"},{icon:<HiOutlineMail  className="text-xl  text-blue-700"/>,label:"Fax",val:"00966-11-434-6654"},{icon:<IoLocationOutline  className="text-xl  text-blue-700"/>,label:"location",val:"Constantine , Algeria"}]
     const Emergency=[{label:"Civil defence",num:"112"},{label:"Police",num:"14"},{label:"Ambulance",num:"19"}]
      const {
@@ -15,8 +16,16 @@ const Report = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form submitted:", data);
+  const onSubmit = async (data) => {
+    console.log(data)
+    console.log('here',token)
+    try{
+      const res= await axios.post("http://192.168.43.143:5000/api/reports/",data ,{headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,} 
+    })
+    console.log(res);
+    } catch(err){alert(err)}
   };
     return(<div className="h-[100vh] p-20 pt-25 flex flex-row justify-between font-['Inter'] ">
         <div className="w-[60%]"><p>Home <span className='text-gray-500'> &gt; report</span></p>
@@ -133,7 +142,7 @@ const Report = () => {
         </div>
         <div className="h-[90%] w-[30%] ">
             <div className="flex flex-col items-start border-b border-gray-300 p-2 mb-4">
-                <p className="font-semibold  text-gray-700 mb-4 ">Contact Hotline</p>
+                <p className="font-semibold  text-gray-700 mb-4 ">Contact psychologist</p>
             {contact.map((x)=>(<div className="flex flex-row  items-start m-2 ml-0 gap-4 text-sm">{x.icon}<div className="flex flex-col self-start "><p className="font-bold">{x.label}</p><p className="text-[#035CBA]">{x.val}</p></div></div>)) }
             </div>
             <div>

@@ -11,26 +11,47 @@ import Profile from "./pages/profile";
 import Layout from "./layout";
 import ReportsTable from "./pages/schoolRepport";
 import Students from "./pages/students"
+import StudentManagement from "./pages/createUser"
+import { AuthProvider } from "./authcontext";
+import Dash from'./pages/dashboard' 
+import Guide from "./pages/GuidingHub";
 function App() {
   return (
     <div className="App">
       
      <BrowserRouter>
      <Routes>
-      <Route path="/schoolRepports" element={<ReportsTable/>}/>
-        <Route  path='/Sign' element={<SignIn_up/>}></Route>
+       <Route path='/sign' element={<SignIn_up/>}></Route>
       <Route element={<Layout />}>
+     <Route path='/GuidingHub' element={<Guide/>}/>
+        <Route path='/learningHub' element={<Learn/>}></Route>
+         
+         <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+
+    
+      <Route path='/create' element={<StudentManagement/>}/>
+  </Route>
+        
       <Route  path='/' element={<Home/>}></Route>
-   <Route path="/students" element={<Students/>}/>
-     {/* <Route element={<ProtectedRoute allowedRoles={["teen"]} />}> */}
+      <Route element={<ProtectedRoute allowedRoles={["Admin","SchoolPsychologist"]} />}>
+
+    
+      <Route path="/dash" element={<Dash/>}/>
+  </Route>
+     <Route element={<ProtectedRoute allowedRoles={["Child"]} />}>
 
       <Route  path='/profile' element={<Profile/>}></Route>
   
   
-      <Route path='/learningHub' element={<Learn/>}></Route>
+   
       <Route path='/chat' element={<Bot/>}></Route>
        <Route path='/report' element={<Report/>}></Route>
-  {/* </Route> */}
+  </Route>
+     <Route element={<ProtectedRoute allowedRoles={["SchoolPsychologist"]} />}>
+           <Route path="/schoolRepports" element={<ReportsTable/>}/>
+              <Route path="/students" element={<Students/>}/>
+
+</Route>
    </Route>
      </Routes>
      </BrowserRouter>

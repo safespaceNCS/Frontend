@@ -3,7 +3,7 @@ import { useAuth } from "./authcontext";
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const { user } = useAuth();
-
+console.log(user)
   if (!user ||!allowedRoles.includes(user.role)) {
     return <Navigate to="/error" />;
   }

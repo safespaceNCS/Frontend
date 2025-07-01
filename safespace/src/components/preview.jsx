@@ -7,6 +7,7 @@ console.log(reportData)
     <div className="w-[50vw] h-[55vh] relative bg-white rounded-lg  px-6 py-8 ">
         {/* <img src={circle} className="absolute h-[30%] -top-30 -left-20 "/> */}
      <p className="text-[#035CBA] font-bold text-2xl mb-6"> Student Report</p>
+     
       <div className="grid grid-cols-2 gap-6 text-sm">       
 <div>
         <label className="block mb-1">Where did it happen?</label>
