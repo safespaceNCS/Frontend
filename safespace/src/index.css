@@ -1,0 +1,84 @@
+@import "tailwindcss";
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+/* Container */
+.chat-container {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f8;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Chat messages box */
+.chat-box {
+  height: 320px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  scroll-behavior: smooth;
+}
+
+/* Individual message */
+.chat-message {
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background-color: #eef1f7;
+  border-radius: 6px;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+/* Bold sender name */
+.chat-message strong {
+  color: #1a73e8;
+}
+
+/* Input section */
+.message-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Input fields */
+.message-input input {
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 1;
+  transition: border 0.2s ease-in-out;
+}
+
+.message-input input:focus {
+  border-color: #1a73e8;
+  outline: none;
+}
+
+/* Send button */
+.message-input button {
+  padding: 10px 16px;
+  font-size: 14px;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.message-input button:hover {
+  background-color: #1558b0;
+}
