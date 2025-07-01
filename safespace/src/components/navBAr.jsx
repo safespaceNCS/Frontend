@@ -5,11 +5,8 @@ const NavBar = () => {
 
   const leftPages = [
     { page: "Home", link: "/" },
-
-    {student:[{ page: "Talk to AI", link: "/chat" },
-    { page: "Report", link: "/report" }]},
-    {school:[{ page: "report", link: "/school" },
-    { page: "Report", link: "/report" }]}
+    { page: "Talk to AI", link: "/chat" },
+    { page: "Report", link: "/report" },
   ];
 
   const rightPages = [
